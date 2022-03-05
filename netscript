@@ -1,0 +1,27 @@
+#!/usr/bin/bash
+
+ifconfig | grep "broadcast" | cut -d " " -f 10 | cut -d "." -f 1,2,3 | uniq > address.txt
+
+
+ADDRESS=$(cat address.txt)
+
+echo "" > $ADDRESS.txt
+
+
+for ip in {1..254}
+do
+	ping -c 1 $ADDRESS.$ip | grep "64 bytes" | cut -d " " -f 4 | tr -d ":" >> $ADDRESS.txt &
+done
+echo "------------------------"
+cat $ADDRESS.txt | sort > ping_$ADDRESS.txt
+
+nmap -sS -iL ping_$ADDRESS.txt
+
+echo " "
+echo "--THIS IS YOUR SERVERS DNS--"
+echo " "
+
+less /etc/resolv.conf > dns.txt
+cat dns.txt
+
+exit 
