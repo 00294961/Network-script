@@ -1,2 +1,2 @@
 # Network-script
-This is how i created my networking script. It allows the script to dump network info to the command line.
+I created a networking script that It allows the script to dump network info to the command line.
